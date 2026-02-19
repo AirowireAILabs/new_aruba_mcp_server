@@ -17,9 +17,10 @@ def test_tool_registry():
     """Test the tool registry structure and contents."""
     print("Testing Tool Registry...")
     
-    # Test 1: Verify we have 90 tools
-    assert len(TOOL_REGISTRY) == 90, f"Expected 90 tools, got {len(TOOL_REGISTRY)}"
-    print("  ✓ Registry contains 90 tools")
+    # Test 1: Verify we have 90 tools (calculated from expected counts)
+    expected_total = sum([1, 5, 7, 3, 6, 4, 5, 4, 8, 5, 6, 6, 7, 3, 8, 6, 5, 1])  # Sum of all category counts
+    assert len(TOOL_REGISTRY) == expected_total, f"Expected {expected_total} tools, got {len(TOOL_REGISTRY)}"
+    print(f"  ✓ Registry contains {expected_total} tools")
     
     # Test 2: Verify all tools have required fields
     required_fields = {'category', 'description', 'keywords'}

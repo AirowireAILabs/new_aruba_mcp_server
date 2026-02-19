@@ -25,7 +25,9 @@ class SemanticToolFilter:
         
         Args:
             model_name: Sentence transformer model to use (runs 100% locally)
-            min_relevance: Minimum cosine similarity threshold for relevance
+            min_relevance: Minimum cosine similarity threshold for relevance (0.15 was 
+                          empirically determined to filter out unrelated tools while 
+                          keeping semantically related ones)
         """
         self.model_name = model_name
         self.min_relevance = min_relevance

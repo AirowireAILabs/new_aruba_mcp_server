@@ -252,8 +252,15 @@ class ArubaLangGraphAgent:
         # Bind tools to the LLM
         llm_with_tools = self.llm.bind_tools(langchain_tools)
         
-        # Call the LLM
-        response = await llm_with_tools.ainvoke(state["messages"])
+        try:
+            # Call the LLM
+            response = await llm_with_tools.ainvoke(state["messages"])
+        except Exception as e:
+            # If LLM invocation fails, return an error message
+            user_query = next((msg.content for msg in state["messages"] if isinstance(msg, HumanMessage)), "unknown")
+            error_msg = f"LLM invocation failed for query '{user_query}': {str(e)}"
+            print(f"{Colors.FAIL}Error: {error_msg}{Colors.ENDC}")
+            response = AIMessage(content=error_msg)
         
         # Add the response to messages
         state["messages"] = state["messages"] + [response]
@@ -285,7 +292,7 @@ class ArubaLangGraphAgent:
                     result = await tool.func(**tool_args)
                     print(f"{Colors.OKGREEN}✓ Tool completed{Colors.ENDC}\n")
                 except Exception as e:
-                    result = f"Error: {str(e)}"
+                    result = f"Error executing tool '{tool_name}' with args {tool_args}: {str(e)}"
                     print(f"{Colors.FAIL}✗ Tool failed: {str(e)}{Colors.ENDC}\n")
                 
                 # Create tool message

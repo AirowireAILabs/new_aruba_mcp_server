@@ -498,7 +498,12 @@ TOOL_REGISTRY = {
 
 
 def get_tool_categories():
-    """Get unique categories from the tool registry."""
+    """
+    Get unique categories from the tool registry.
+    
+    Returns:
+        Sorted list of unique category names.
+    """
     return sorted(set(tool["category"] for tool in TOOL_REGISTRY.values()))
 
 
