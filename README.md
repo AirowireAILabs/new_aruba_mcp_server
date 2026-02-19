@@ -222,6 +222,11 @@ Common status codes:
 3. **Rotate tokens regularly**: Update your OAuth2 tokens periodically
 4. **Use minimal permissions**: Configure API credentials with only the permissions needed
 5. **Monitor logs**: Review server logs for unauthorized access attempts
+6. **Protect credentials in memory**: While credentials are stored as global variables for efficiency, they are:
+   - Never logged by the application
+   - Only read from environment variables (never hardcoded)
+   - Not exposed in error messages or API responses
+   - Sanitized before any external communication
 
 ## Troubleshooting
 

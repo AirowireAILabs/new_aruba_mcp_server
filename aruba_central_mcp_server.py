@@ -1357,8 +1357,13 @@ async def associate_devices_to_site(
     Returns:
         JSON string containing association result
     """
+    try:
+        site_id_int = int(site_id)
+    except ValueError:
+        return json.dumps({"error": True, "message": f"Invalid site_id: {site_id} must be a valid integer"})
+    
     json_data = {
-        "site_id": int(site_id),
+        "site_id": site_id_int,
         "device_ids": [s.strip() for s in serial_numbers.split(",")]
     }
     result = await _post("/central/v2/sites/associations", json_data)
@@ -1380,8 +1385,13 @@ async def unassociate_devices_from_site(
     Returns:
         JSON string containing unassociation result
     """
+    try:
+        site_id_int = int(site_id)
+    except ValueError:
+        return json.dumps({"error": True, "message": f"Invalid site_id: {site_id} must be a valid integer"})
+    
     json_data = {
-        "site_id": int(site_id),
+        "site_id": site_id_int,
         "device_ids": [s.strip() for s in serial_numbers.split(",")]
     }
     result = await _delete("/central/v2/sites/associations", json_data)
@@ -2067,8 +2077,19 @@ async def get_all_reporting_radios(
 # Main Entry Point
 # ============================================================================
 
+async def cleanup():
+    """Cleanup resources on shutdown."""
+    global http_client
+    if http_client is not None:
+        await http_client.aclose()
+        http_client = None
+        logger.info("HTTP client closed")
+
+
 if __name__ == "__main__":
     import argparse
+    import asyncio
+    import signal
     
     parser = argparse.ArgumentParser(description="Aruba Central MCP Server")
     parser.add_argument("--sse", action="store_true", help="Run with SSE transport instead of stdio")
@@ -2083,8 +2104,21 @@ if __name__ == "__main__":
     logger.info(f"Timeout: {TIMEOUT}s")
     logger.info("=" * 60)
     
-    # Run the MCP server
-    if args.sse:
-        mcp.run(transport="sse")
-    else:
-        mcp.run(transport="stdio")
+    # Setup cleanup on shutdown
+    def handle_shutdown(signum, frame):
+        """Handle shutdown signals."""
+        logger.info("Shutdown signal received, cleaning up...")
+        asyncio.create_task(cleanup())
+    
+    signal.signal(signal.SIGINT, handle_shutdown)
+    signal.signal(signal.SIGTERM, handle_shutdown)
+    
+    try:
+        # Run the MCP server
+        if args.sse:
+            mcp.run(transport="sse")
+        else:
+            mcp.run(transport="stdio")
+    finally:
+        # Ensure cleanup happens
+        asyncio.run(cleanup())
