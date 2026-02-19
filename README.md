@@ -4,7 +4,7 @@ Production-grade MCP (Model Context Protocol) server that exposes the full HPE A
 
 ## 🚀 Features
 
-- **67 MCP Tools** across 19 API categories
+- **90 MCP Tools** across 19 API categories
 - **Auto token refresh** - Automatic OAuth2 token refresh on 401 responses
 - **Retry logic** - Smart retry on authentication failures
 - **Clean error handling** - Structured JSON error responses
@@ -37,7 +37,7 @@ Production-grade MCP (Model Context Protocol) server that exposes the full HPE A
 | 18 | **MSP** | 5 | `get_msp_customers`, `create_msp_customer`, `get_msp_country_codes`, `get_msp_devices`, `get_msp_groups` |
 | 19 | **Telemetry** | 1 | `get_all_reporting_radios` |
 
-**Total: 67 tools**
+**Total: 90 tools**
 
 ## 📦 Installation
 
@@ -277,7 +277,7 @@ assign_subscription(
 2. **Request Handler** - `_request()` function with auto-retry on 401
 3. **Token Refresh** - `_refresh_token()` for automatic OAuth2 token renewal
 4. **HTTP Helpers** - `_get()`, `_post()`, `_patch()`, `_put()`, `_delete()`
-5. **MCP Tools** - 67 `@mcp.tool()` decorated functions
+5. **MCP Tools** - 90 `@mcp.tool()` decorated functions
 
 ### Error Handling
 

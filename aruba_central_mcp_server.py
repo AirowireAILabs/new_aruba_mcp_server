@@ -140,7 +140,7 @@ async def _request(
         # Return JSON response or empty dict for successful operations without body
         try:
             return response.json()
-        except:
+        except (ValueError, Exception):
             return {"status": "success", "status_code": response.status_code}
             
     except httpx.HTTPStatusError as e:
@@ -2070,8 +2070,6 @@ async def get_all_reporting_radios(
 # =============================================================================
 
 if __name__ == "__main__":
-    import sys
-    
     # Check for SSE transport flag
     transport = "stdio"
     if "--sse" in sys.argv:
