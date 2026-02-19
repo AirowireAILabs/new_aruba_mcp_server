@@ -4,11 +4,11 @@ Production-grade MCP (Model Context Protocol) server that exposes the complete H
 
 ## Overview
 
-This MCP server enables AI assistants like Claude to interact with HPE Aruba Networking Central through 67 production-ready tools organized across 19 API categories. It includes enterprise features like automatic OAuth2 token refresh, retry logic, structured error handling, and support for both stdio and SSE transports.
+This MCP server enables AI assistants like Claude to interact with HPE Aruba Networking Central through 90 production-ready tools organized across 19 API categories. It includes enterprise features like automatic OAuth2 token refresh, retry logic, structured error handling, and support for both stdio and SSE transports.
 
 ## Tools by Category
 
-The server provides **67 tools** across **19 API categories**:
+The server provides **90 tools** across **19 API categories**:
 
 | # | Category | Tools | Count |
 |---|----------|-------|-------|
