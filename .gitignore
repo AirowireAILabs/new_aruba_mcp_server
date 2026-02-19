@@ -50,6 +50,7 @@ mcp_config.json.local
 .coverage
 htmlcov/
 .tox/
+test_server.py
 
 # Logs
 *.log
