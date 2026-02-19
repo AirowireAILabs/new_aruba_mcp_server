@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "aruba-central": {
+      "command": "python",
+      "args": ["aruba_central_mcp_server.py"],
+      "env": {
+        "ARUBA_CENTRAL_BASE_URL": "https://apigw-uswest4.central.arubanetworks.com",
+        "ARUBA_CENTRAL_TOKEN": "YOUR_ACCESS_TOKEN",
+        "ARUBA_CENTRAL_CLIENT_ID": "YOUR_CLIENT_ID",
+        "ARUBA_CENTRAL_CLIENT_SECRET": "YOUR_CLIENT_SECRET",
+        "ARUBA_CENTRAL_REFRESH_TOKEN": "YOUR_REFRESH_TOKEN",
+        "ARUBA_CENTRAL_TIMEOUT": "30"
+      }
+    }
+  }
+}
