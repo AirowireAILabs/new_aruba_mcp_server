@@ -221,7 +221,7 @@ class ArubaLangGraphAgent:
         # Compile the graph
         self.graph = workflow.compile()
     
-    def _filter_tools_node(self, state: AgentState) -> AgentState:
+    async def _filter_tools_node(self, state: AgentState) -> AgentState:
         """Node that filters tools based on the user query."""
         # Get the last user message
         user_messages = [msg for msg in state["messages"] if isinstance(msg, HumanMessage)]
@@ -243,7 +243,7 @@ class ArubaLangGraphAgent:
         
         return state
     
-    def _agent_node(self, state: AgentState) -> AgentState:
+    async def _agent_node(self, state: AgentState) -> AgentState:
         """Node that calls the LLM with filtered tools."""
         # Get the filtered tools
         filtered_tool_names = state.get("filtered_tool_names", [])
@@ -253,14 +253,14 @@ class ArubaLangGraphAgent:
         llm_with_tools = self.llm.bind_tools(langchain_tools)
         
         # Call the LLM
-        response = llm_with_tools.invoke(state["messages"])
+        response = await llm_with_tools.ainvoke(state["messages"])
         
         # Add the response to messages
         state["messages"] = state["messages"] + [response]
         
         return state
     
-    def _execute_tools_node(self, state: AgentState) -> AgentState:
+    async def _execute_tools_node(self, state: AgentState) -> AgentState:
         """Node that executes tool calls."""
         # Get the last AI message with tool calls
         last_message = state["messages"][-1]
@@ -282,9 +282,7 @@ class ArubaLangGraphAgent:
                 tool = self.tool_manager.langchain_tools[tool_name]
                 try:
                     # Execute the async tool
-                    result = asyncio.get_event_loop().run_until_complete(
-                        tool.func(**tool_args)
-                    )
+                    result = await tool.func(**tool_args)
                     print(f"{Colors.OKGREEN}✓ Tool completed{Colors.ENDC}\n")
                 except Exception as e:
                     result = f"Error: {str(e)}"
